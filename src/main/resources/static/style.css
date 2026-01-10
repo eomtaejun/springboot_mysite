@@ -1,0 +1,14 @@
+textarea{
+	width: 100%;
+	resize: none;
+}
+
+button[type="submit"]{
+	font-size: .9rem;
+}
+
+a{
+	text-decoration: none;
+	color: var(--bs-dark);
+}
+a:hover{font-weight: 600;}

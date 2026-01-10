@@ -1,0 +1,36 @@
+<html layout:decorate="~{layout}">
+<div class="container py-5" layout:fragment="content">
+	
+	<div class="mb-5">			
+		<h1 class="fw-bold border-bottom mb-3 pb-3" th:text="${question.subject}"></h1>
+		<div class="fw-semibold" th:text="${question.content}"></div>
+	</div>
+	<!--<h2>[[${question.answerList.size()}]]개의 답변이 있습니다.</h2>-->
+
+	<div class="mb-5">			
+		<h5>[[${#lists.size(question.answerList)}]]개의 답변이 있습니다.</h5>	
+		<div class="list-group">
+		    <a th:each="answer, loop: ${question.answerList}" href="#" class="list-group-item list-group-item-action py-3" aria-current="true">
+		        <div class="d-flex w-100 justify-content-between">
+		            <h5 class="mb-1" th:text="${loop.count}"></h5>
+		            <small th:text="${#temporals.format(answer.createDate, 'yy-MM-dd hh:mm:ss')}"></small>
+		        </div>
+		        <p class="mb-1" th:text="${answer.content}"></p>
+		        <!--<small>And some small print.</small>-->
+		    </a>
+		</div>
+	</div>
+	
+	<div class="">
+		<form th:action="@{|/answer/create/${question.id}|}" method="post">
+			<div class="form-floating mb-2">					
+				<textarea name="content" id="content" class="form-control" cols="30" rows="10"></textarea>
+				<label for="content">comment</label>
+			</div>
+			<div class="d-flex justify-content-end">
+				<button type="submit" class="btn btn-dark px-4 py-2 rounded-pill fw-semibold">등록</button>
+			</div>
+		</form>
+	</div>
+</div>
+</html>

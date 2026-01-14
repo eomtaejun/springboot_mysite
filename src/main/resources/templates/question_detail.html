@@ -24,7 +24,7 @@
 	<div class="">
 		<form th:action="@{|/answer/create/${question.id}|}" method="post">
 			<div class="form-floating mb-2">					
-				<textarea name="content" id="content" class="form-control" cols="30" rows="10"></textarea>
+				<textarea name="content" id="content" class="form-control resize-none" cols="30" rows="10"></textarea>
 				<label for="content">comment</label>
 			</div>
 			<div class="d-flex justify-content-end">

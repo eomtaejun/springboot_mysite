@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,15 +34,16 @@ public class QuestionController {
 	}
 	
 	@GetMapping("/create")
-	public String questionCreate() {
+	public String create() {
 		// view page로 이동
 		return "question_form";
 	}
 	
 	// 목록 페이지로 이동
 	@PostMapping("/create")
-	public String questionCreate(String test) {
-		// 질문 저장
-		return "question_form";
+	public String createQuestion(Model model, @RequestParam(value="subject") String subject, @RequestParam(value="content") String content) {
+		this.questionService.create(subject, content);
+		
+		return "redirect:/question/list";
 	}
 }

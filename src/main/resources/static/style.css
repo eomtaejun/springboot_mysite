@@ -1,7 +1,8 @@
 textarea{
 	width: 100%;
-	resize: none;
 }
+.resize-none{resize: none;}
+.height-auto{height: auto !important;}
 
 button[type="submit"]{
 	font-size: .9rem;

@@ -15,13 +15,30 @@
 	        </tr>
 	    </thead>
 	    <tbody class="table-group-divider">
-	        <tr th:each="question, loop: ${questionList}">
+	        <tr th:each="question, loop: ${pagination}">
 	            <td th:text="${loop.count}"></td>
 	            <td><a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a></td>
 	            <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd hh:mm:ss')}"></td>
 	        </tr>
 	    </tbody>
 	</table>
+	
+	<!--pagination-->		
+	<nav aria-label="Page navigation example" th:if="${!pagination.isEmpty()}">
+		<ul class="pagination justify-content-center">
+		    <li class="page-item" th:classappend="${!pagination.hasPrevious} ? 'disabled' : ''">
+				<a class="page-link" th:href="@{|?page=${pagination.number-1}|}">Previous</a>
+			</li>
+			
+		    <li class="page-item" th:classappend="${pagination.number==page} ? 'active' : ''" th:each="page : ${#numbers.sequence(0, pagination.totalPages-1)}" th:if="${page>=pagination.number-2 and page<=pagination.number+2}">
+				<a class="page-link" th:href="@{|?page=${page}|}" th:text="${page}">0</a>
+			</li>
+			
+		    <li class="page-item" th:classappend="${!pagination.hasNext} ? 'disabled' : ''">
+				<a class="page-link" th:href="@{|?page=${pagination.number+1}|}">Next</a>
+			</li>
+		</ul>
+	</nav>
 </div>
 
 <!--<table>

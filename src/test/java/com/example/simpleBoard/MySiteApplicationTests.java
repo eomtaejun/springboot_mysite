@@ -25,7 +25,7 @@ class MySiteApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
-	@Transactional /* method가 끝날 때까지 DB session이 종료되지 않게 함 */
+//	@Transactional /* method가 끝날 때까지 DB session이 종료되지 않게 함 */
 	@Test
 	void contextLoads() {
 		/*
@@ -91,7 +91,7 @@ class MySiteApplicationTests {
 		*/
 		
 		/*
-		for(int i=1; i<=50; i++) {
+		for(int i=1; i<=300; i++) {
 			Question q1=new Question();
 			q1.setSubject("테스트 코드를 이용해 생성한 제목: [제목"+i+"]");
 			q1.setContent("테스트 코드를 이용해 생성한 내용: [내용"+i+"]");
@@ -100,6 +100,7 @@ class MySiteApplicationTests {
 		}
 		*/
 		
+		/*
 		Optional<Question> q=this.questionRepository.findById(1);
 		assertTrue(q.isPresent());
 		Question question=q.get();
@@ -110,7 +111,7 @@ class MySiteApplicationTests {
 			Answer answer=aList.get(i);
 			System.out.println(answer.getContent());
 		}
-		
+		*/
 		
 		/*
 		this.questionRepository.deleteById(3);

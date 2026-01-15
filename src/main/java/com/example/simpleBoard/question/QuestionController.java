@@ -34,7 +34,7 @@ public class QuestionController {
 	}
 	
 	@GetMapping("/create")
-	public String create() {
+	public String createQuestion() {
 		// view page로 이동
 		return "question_form";
 	}
@@ -42,6 +42,7 @@ public class QuestionController {
 	// 목록 페이지로 이동
 	@PostMapping("/create")
 	public String createQuestion(Model model, @RequestParam(value="subject") String subject, @RequestParam(value="content") String content) {
+		// 질문 저징
 		this.questionService.create(subject, content);
 		
 		return "redirect:/question/list";

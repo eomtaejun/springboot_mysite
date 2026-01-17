@@ -1,0 +1,40 @@
+<html layout:decorate="~{layout}">
+<div class="container py-5" layout:fragment="content">
+	
+	<div class="mb-5">
+		<h1 class="fw-bold border-bottom mb-3 pb-3">회원가입</h1>
+	</div>
+	
+	<form th:action="@{/user/signup}" method="post" th:object="${userCreateForm}">
+		
+		<div th:replace="~{form_errors::formErrorsFragment}"></div>
+		
+		<div class="form-floating mb-3">
+		    <input type="text" class="form-control" th:field="*{username}" placeholder="username">
+		    <label for="username" class="form-label">User Name</label>
+	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+	  </div>
+	  
+		<div class="form-floating mb-3">
+		    <input type="password" class="form-control" th:field="*{password}" placeholder="password">
+		    <label for="password" class="form-label">Password</label>
+	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+	  </div>
+	  
+		<div class="form-floating mb-3">
+		    <input type="password" class="form-control" th:field="*{passwordConfirm}" placeholder="passwordConfirm">
+		    <label for="passwordConfirm" class="form-label">Password Confirm</label>
+	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+	  </div>
+	  
+		<div class="form-floating mb-3">
+		    <input type="email" class="form-control" th:field="*{email}" placeholder="email">
+		    <label for="email" class="form-label">E-mail Address</label>
+	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+	  </div>
+	  
+	  <button type="submit" class="btn btn-dark px-4 py-2 rounded-3 fw-semibold">Sign Up</button>
+	</form>
+	
+</div>
+</html>

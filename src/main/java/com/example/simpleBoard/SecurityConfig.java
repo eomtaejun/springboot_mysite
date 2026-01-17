@@ -16,12 +16,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    private final AnswerController answerController;
-
-    SecurityConfig(AnswerController answerController) {
-        this.answerController = answerController;
-    }
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(

@@ -1,3 +1,22 @@
+.fx-1{font-size: 1rem !important;}
+.fx-2{font-size: 1.2rem !important;}
+.fx-3{font-size: 1.4rem !important;}
+.fx-4{font-size: 1.6rem !important;}
+.fx-5{font-size: 1.8rem !important;}
+.fx-6{font-size: 2rem !important;}
+.fx-7{font-size: 2.2rem !important;}
+.fx-8{font-size: 2.4rem !important;}
+.fx-9{font-size: 2.6rem !important;}
+.fx-10{font-size: 2.8rem !important;}
+.fx-11{font-size: 3rem !important;}
+.fx-12{font-size: 4rem !important;}
+.fx-13{font-size: 5rem !important;}
+
+.fx-n1{font-size: .95rem !important;}
+.fx-n2{font-size: .9rem !important;}
+.fx-n3{font-size: .85rem !important;}
+.fx-n4{font-size: .8rem !important;}
+
 textarea{
 	width: 100%;
 }

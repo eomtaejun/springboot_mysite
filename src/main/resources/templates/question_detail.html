@@ -5,59 +5,82 @@
 		<div class="pb-3 mb-3 d-flex justify-content-between align-items-end border-bottom">			
 			<div>
 				<h1 class="mb-2 fw-bold" th:text="${question.subject}"></h1>
-				<h5 class="mb-0 text-secondary fw-semibold" th:text="${question.author?.username}"></h5>
+				<div class="d-flex justify-content-start align-items-end gap-2">					
+					<h5 class="mb-0 text-secondary fw-semibold" th:text="${question.author?.username}"></h5>
+					<span class="fx-n3 text-secondary" th:text="${question.updateDate!=null ? #temporals.format(question.updateDate, 'yyyy-MM-dd hh:mm:ss')+' (수정됨)' : #temporals.format(question.createDate, 'yyyy-MM-dd hh:mm:ss')}"></span>
+				</div>
 			</div>
 			
-			<div sec:authorize="isAuthenticated()" th:if="${question.author!=null and #authentication.getPrincipal().getUsername()==question.author.username}" class="d-flex justify-content-end align-items-center gap-2">
-				<a th:href="@{|/question/update/${question.id}|}" class="fx-n3 fw-semibold text-secondary text-decoration-underline">수정</a>
-				<a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}" class="delete fx-n3 fw-semibold text-danger text-decoration-underline">삭제</a>
+			<div class="d-flex justify-content-end align-items-center gap-4">				
+				<div sec:authorize="isAuthenticated()" th:if="${question.author!=null and #authentication.getPrincipal().getUsername()==question.author.username}" class="d-flex justify-content-end align-items-center gap-2">
+					<a th:href="@{|/question/update/${question.id}|}" class="fx-n3 fw-semibold text-secondary text-decoration-underline">수정</a>
+					<a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}" class="delete fx-n3 fw-semibold text-danger text-decoration-underline">삭제</a>
+				</div>
+				
+				<div class="d-flex-justify-content-end align-items-center">
+					<span class="badge bg-danger" th:text="${#lists.size(question.voter)}">0</span>
+					<a href="javascript:void(0)" th:data-uri="@{|/question/vote/${question.id}|}" class="recommand btn fx-n2 fw-semibold" th:classappend="${question.getVoter().contains(siteUser) ? 'btn-danger' : 'btn-outline-danger'}">개추</a>
+				</div>
 			</div>
 		</div>
 		<div class="fw-semibold" th:text="${question.content}"></div>
 	</div>
 	<!--<h2>[[${question.answerList.size()}]]개의 답변이 있습니다.</h2>-->
+	
+	<div class="mb-3">
+			<form th:action="@{|/answer/create/${question.id}|}" method="post" th:object="${answerForm}">
+				
+				<div th:replace="~{form_errors::formErrorsFragment}"></div>
+				
+				<div class="form-floating mb-2">					
+					<textarea th:field="*{content}" sec:authorize="isAnonymous()" disabled class="form-control resize-none" cols="30" rows="5">로그인 이후 사용 가능합니다</textarea>
+					<textarea th:field="*{content}" sec:authorize="isAuthenticated()" class="form-control resize-none" rows="5"></textarea>
+					<label for="content">comment</label>
+				</div>
+				<div class="d-flex justify-content-end">
+					<button type="submit" class="btn btn-dark px-4 py-2 rounded-pill fw-semibold">등록</button>
+				</div>
+			</form>
+		</div>
 
-	<div class="mb-5">			
-		<h5>[[${#lists.size(question.answerList)}]]개의 답변이 있습니다.</h5>	
+	<div class="">			
+		<h5 class="mb-3 fw-semibold">[[${#lists.size(question.answerList)}]]개의 답변이 있습니다.</h5>	
 		<div class="list-group">
 		    <div th:each="answer, loop: ${question.answerList}" class="list-group-item list-group-item-action py-3" aria-current="true">
+				<a href="#" th:id="|answer_${answer.id}|"></a>
+				
 		        <div class="d-flex w-100 justify-content-between">
 		            <h5 class="mb-2 fw-semibold" th:text="${answer.author?.username}"></h5>
-		            <small th:text="${#temporals.format(answer.createDate, 'yy-MM-dd hh:mm:ss')}"></small>
+		            <small th:text="${answer.updateDate!=null ? #temporals.format(answer.updateDate, 'yyyy-MM-dd hh:mm:ss')+' (수정됨)' : #temporals.format(answer.createDate, 'yyyy-MM-dd hh:mm:ss')}"></small>
 		        </div>
 		        <p class="mb-1" th:text="${answer.content}"></p>
 		        <!--<small>And some small print.</small>-->
 				<div class="d-flex justify-content-end align-items-end gap-2">					
 					<a th:href="@{|/answer/update/${answer.id}|}" class="fx-n3 fw-semibold text-secondary text-decoration-underline">수정</a>
 					<a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}" class="delete fx-n3 fw-semibold text-danger text-decoration-underline">삭제</a>
+					
+					<div class="d-flex justify-content-end align-items-center gap-2 ms-3">						
+						<span class="badge bg-danger" th:text="${#lists.size(answer.voter)}">0</span>
+						<a href="javascript:void(0)" th:data-uri="@{|/answer/vote/${answer.id}|}" class="recommand btn fx-n4 fw-semibold" th:classappend="${answer.getVoter().contains(siteUser) ? 'btn-danger' : 'btn-outline-danger'}">개추</a>
+					</div>
 				</div>
 		    </div>
 		</div>
-	</div>
-	
-	<div class="">
-		<form th:action="@{|/answer/create/${question.id}|}" method="post" th:object="${answerForm}">
-			
-			<div th:replace="~{form_errors::formErrorsFragment}"></div>
-			
-			<div class="form-floating mb-2">					
-				<textarea th:field="*{content}" sec:authorize="isAnonymous()" disabled class="form-control resize-none" cols="30" rows="5">로그인 이후 사용 가능합니다</textarea>
-				<textarea th:field="*{content}" sec:authorize="isAuthenticated()" class="form-control resize-none" rows="5"></textarea>
-				<label for="content">comment</label>
-			</div>
-			<div class="d-flex justify-content-end">
-				<button type="submit" class="btn btn-dark px-4 py-2 rounded-pill fw-semibold">등록</button>
-			</div>
-		</form>
 	</div>
 </div>
 
 <script layout:fragment="script">
 	document.querySelectorAll(".delete").forEach(btn=>{
-		btn	.addEventListener("click", e=>{
+		btn.addEventListener("click", e=>{
 			if(confirm("삭제하시겠습니까?")){
 				location.href=e.target.dataset.uri;
 			}
+		})
+	})
+	
+	document.querySelectorAll(".recommand").forEach(btn=>{
+		btn.addEventListener("click", e=>{
+			location.href=e.target.dataset.uri;
 		})
 	})
 </script>

@@ -5,7 +5,7 @@
 		<h1 class="fw-bold border-bottom mb-3 pb-3">회원가입</h1>
 	</div>
 	
-	<form th:action="@{/user/signup}" method="post" th:object="${userCreateForm}">
+	<form th:action="@{/user/signup}" method="post" th:object="${userCreateForm}" enctype="multipart/form-data">
 		
 		<div th:replace="~{form_errors::formErrorsFragment}"></div>
 		
@@ -13,25 +13,30 @@
 		    <input type="text" class="form-control" th:field="*{username}" placeholder="username">
 		    <label for="username" class="form-label">User Name</label>
 	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
-	  </div>
+		</div>
 	  
 		<div class="form-floating mb-3">
 		    <input type="password" class="form-control" th:field="*{password}" placeholder="password">
 		    <label for="password" class="form-label">Password</label>
 	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
-	  </div>
+		</div>
 	  
 		<div class="form-floating mb-3">
 		    <input type="password" class="form-control" th:field="*{passwordConfirm}" placeholder="passwordConfirm">
 		    <label for="passwordConfirm" class="form-label">Password Confirm</label>
 	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
-	  </div>
-	  
+		</div>
+	 
 		<div class="form-floating mb-3">
 		    <input type="email" class="form-control" th:field="*{email}" placeholder="email">
 		    <label for="email" class="form-label">E-mail Address</label>
 	    <!--<div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
-	  </div>
+		</div>
+		
+		<div class="mb-3">
+			<label for="file" class="form-label">프로필 이미지</label>
+			<input type="file" class="form-control" name="file" id="file" />
+		</div>
 	  
 	  <button type="submit" class="btn btn-dark px-4 py-2 rounded-3 fw-semibold">Sign Up</button>
 	</form>

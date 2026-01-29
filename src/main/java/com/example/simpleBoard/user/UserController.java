@@ -6,6 +6,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/signup")
-	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+	public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, @RequestParam("file") MultipartFile file) {
 		if(bindingResult.hasErrors()) {
 			return "signup_Form";
 		}
@@ -33,7 +35,7 @@ public class UserController {
 		}
 		
 		try {
-			userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword());
+			userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword(), file);
 		} catch(DataIntegrityViolationException err) {
 			err.printStackTrace();
 			bindingResult.reject("signupFailed", "[Email] 중복된 이메일");

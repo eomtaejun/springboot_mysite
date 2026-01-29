@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,21 +35,30 @@ public class QuestionController {
 	private final UserService userService;
 	
 	@GetMapping("/list")
-	public String list(Model model, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="keyword", defaultValue="") String keyword) {
+	public String list(Model model, @RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="keyword", defaultValue="") String keyword, @AuthenticationPrincipal UserDetails userDetails) {
 		Page<Question> pagination=this.questionService.getList(page, keyword);
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("keyword", keyword);
+		if(userDetails!=null) {
+			SiteUser user=userService.getUser(userDetails.getUsername());
+			model.addAttribute("profileImage", user.getImageUrl());
+		}
 		return "question_list";
 	}
 	
 	@GetMapping("/detail/{id}")
-	public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, Principal principal) {
+	public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm, Principal principal, @AuthenticationPrincipal UserDetails userDetails) {
 		Question question=this.questionService.getQuestion(id);
 		model.addAttribute("question", question);
 		
 		if(principal!=null) {
 			SiteUser siteUser=this.userService.getUser(principal.getName());
 			model.addAttribute("siteUser", siteUser);
+		}
+		
+		if(userDetails!=null) {
+			SiteUser user=userService.getUser(userDetails.getUsername());
+			model.addAttribute("profileImage", user.getImageUrl());
 		}
 		
 		return "question_detail";

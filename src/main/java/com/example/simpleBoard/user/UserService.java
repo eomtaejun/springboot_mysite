@@ -1,9 +1,15 @@
 package com.example.simpleBoard.user;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.simpleBoard.DataNotFoundException;
 
@@ -14,12 +20,20 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private static final String UPLOAD_DIR="src/main/resources/static/images/user/";
 	
-	public SiteUser create(String username, String email, String password) {
+	public SiteUser create(String username, String email, String password, MultipartFile file) throws IOException {
 		SiteUser user=new SiteUser();
 		user.setUsername(username);
 		user.setEmail(email);
 		user.setPassword(passwordEncoder.encode(password));
+		if(!file.isEmpty()) {
+			String fileName=UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
+			Path filePath=Paths.get(UPLOAD_DIR, fileName);
+			Files.createDirectories(filePath.getParent());
+			Files.write(filePath, file.getBytes());
+			user.setImageUrl("/images/user/"+fileName);
+		}
 		
 		this.userRepository.save(user);
 		return user;

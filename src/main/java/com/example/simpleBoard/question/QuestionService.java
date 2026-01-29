@@ -34,7 +34,8 @@ public class QuestionService {
 		sorts.add(Sort.Order.desc("id"));
 		Pageable pageable=PageRequest.of(page, 10, Sort.by(sorts));
 		Specification<Question> spec=search(keyword);
-		return this.questionRepository.findAll(spec, pageable);
+		// return this.questionRepository.findAll(spec, pageable);
+		return this.questionRepository.findAllByKeyword(keyword, pageable);
 	}
 	
 	public Question getQuestion(Integer id) {
